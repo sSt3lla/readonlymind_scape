@@ -1,6 +1,7 @@
 import requests
 import pdfkit
 import argparse
+import re
 from bs4 import BeautifulSoup
 
 def get_chapter_amount(url: str):
@@ -48,11 +49,15 @@ h1 {
 <body>
     '''
 
+    if chapter_amount == 0:
+        chapter_amount += 1
+
     # Use the provided chapter range or the entire range if not specified
     start_chapter = start_chapter if start_chapter else 1
     end_chapter = end_chapter if end_chapter else chapter_amount
 
     for i in range(start_chapter, end_chapter + 1):
+        print(i)
         chapter_url = f'{url}/{i}'
         page = requests.get(chapter_url)
         soup = BeautifulSoup(page.content, 'html.parser')
