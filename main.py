@@ -13,8 +13,9 @@ def html_encode_non_ascii(text: str):
     return ''.join(f'&#{ord(char)};' if ord(char) > 127 else char for char in text)
 
 def validate_url(url: str):
-    if not url.startswith("https://readonlymind.com/"):
-        raise ValueError("URL must start with 'https://readonlymind.com/'")
+    pattern = re.compile(r"https?://(www\.)?readonlymind\.com(/.*)?")
+    if not pattern.match(url):
+        raise ValueError("URL must start with any form of 'readonlymind.com'")
     
     try:
         response = requests.get(url)
