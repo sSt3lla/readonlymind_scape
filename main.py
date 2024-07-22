@@ -1,3 +1,5 @@
+# Made with alot of chatgpt
+
 import requests
 import pdfkit
 import argparse
