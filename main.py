@@ -1,5 +1,3 @@
-#Made with alof of chatgpt help
-
 import requests
 import pdfkit
 import argparse
@@ -14,9 +12,19 @@ def get_chapter_amount(url: str):
 def html_encode_non_ascii(text: str):
     return ''.join(f'&#{ord(char)};' if ord(char) > 127 else char for char in text)
 
-def main(url, output, start_chapter=None, end_chapter=None):
-    chapter_amount = get_chapter_amount(url)
+def validate_url(url: str):
+    if not url.startswith("https://readonlymind.com/"):
+        raise ValueError("URL must start with 'https://readonlymind.com/'")
+    
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Raises an HTTPError if the HTTP request returned an unsuccessful status code
+    except requests.exceptions.RequestException as e:
+        raise ValueError(f"Unable to connect to the URL: {e}")
 
+def main(url, output, start_chapter=None, end_chapter=None):
+    validate_url(url)
+    chapter_amount = get_chapter_amount(url)
     combined_html = '''
 <html>
 <head>
